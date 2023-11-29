@@ -62,7 +62,7 @@ http {
   }
 
   log_by_lua_block {
-    metric_request:inc(1, {"POST"})
+    metrics_request:inc(1, {"POST"})
   }
 
   init_by_lua_block {
