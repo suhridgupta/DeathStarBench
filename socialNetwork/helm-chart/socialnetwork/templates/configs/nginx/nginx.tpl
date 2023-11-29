@@ -54,6 +54,12 @@ http {
 
   lua_shared_dict config 32k;
 
+  lua_shared_dict prometheus_metrics 10M;
+
+  init_worker_by_lua_block {
+    prometheus = require("prometheus").init("prometheus_metrics")
+  }
+
   init_by_lua_block {
     local bridge_tracer = require "opentracing_bridge_tracer"
     local GenericObjectPool = require "GenericObjectPool"
