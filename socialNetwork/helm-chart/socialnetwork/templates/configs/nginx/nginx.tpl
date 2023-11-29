@@ -58,6 +58,7 @@ http {
 
   init_worker_by_lua_block {
     prometheus = require("prometheus").init("prometheus_metrics")
+    metrics_request = prometheus:counter("nginx_post_total", "Number of POST requests", {"method"})
   }
 
   init_by_lua_block {
