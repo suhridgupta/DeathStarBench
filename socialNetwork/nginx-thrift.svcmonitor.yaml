@@ -1,0 +1,13 @@
+kind: ServiceMonitor
+apiVersion: monitoring.coreos.com/v1
+metadata:
+  name: nginx-thrift
+  namespace: edge
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: nginx-thrift
+  endpoints:
+  - port: "8080"

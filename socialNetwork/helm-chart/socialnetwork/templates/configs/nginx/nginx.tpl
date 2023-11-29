@@ -54,6 +54,13 @@ http {
 
   lua_shared_dict config 32k;
 
+  lua_shared_dict prometheus_metrics 10M;
+
+  init_worker_by_lua_block {
+    prometheus = require("prometheus").init("prometheus_metrics")
+    metrics_request = prometheus:counter("nginx_post_total", "Number of POST requests", {"method"})
+  }
+
   init_by_lua_block {
     local bridge_tracer = require "opentracing_bridge_tracer"
     local GenericObjectPool = require "GenericObjectPool"
@@ -96,6 +103,12 @@ http {
 
     # Checklist: Make sure that the location here is consistent
     # with the location you specified in wrk2.
+    location /metrics {
+      content_by_lua_block {
+        prometheus:collect()
+      }
+    }
+
     location /api/user/register {
           if ($request_method = 'OPTIONS') {
             add_header 'Access-Control-Allow-Origin' '*';
@@ -418,6 +431,7 @@ http {
 
     location /wrk2-api/post/compose {
       content_by_lua '
+          metrics_request:inc(1, {"POST"})
           local client = require "wrk2-api/post/compose"
           client.ComposePost();
       ';
