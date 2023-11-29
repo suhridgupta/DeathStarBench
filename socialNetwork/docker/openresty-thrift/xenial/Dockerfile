@@ -204,6 +204,7 @@ ENV LUA_PATH=$LUA_PATH;/gen-lua/?.lua
 
 RUN luarocks install long \
     && luarocks install lua-resty-jwt \
+    && luarocks install nginx-lua-prometheus \
     && ldconfig
 
 
