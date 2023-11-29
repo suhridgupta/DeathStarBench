@@ -61,10 +61,6 @@ http {
     metrics_request = prometheus:counter("nginx_post_total", "Number of POST requests", {"method"})
   }
 
-  log_by_lua_block {
-    metrics_request:inc(1, {"POST"})
-  }
-
   init_by_lua_block {
     local bridge_tracer = require "opentracing_bridge_tracer"
     local GenericObjectPool = require "GenericObjectPool"
@@ -435,6 +431,7 @@ http {
 
     location /wrk2-api/post/compose {
       content_by_lua '
+          metrics_request:inc(1, {"POST"})
           local client = require "wrk2-api/post/compose"
           client.ComposePost();
       ';
