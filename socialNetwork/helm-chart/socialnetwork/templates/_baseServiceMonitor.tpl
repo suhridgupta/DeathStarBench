@@ -10,7 +10,7 @@ spec:
     matchLabels:
       app: {{ .Values.name }}
   endpoints:
-  {{ - range .Values.ports }}
+  {{- range .Values.ports }}
   - port: "{{ .port }}"
   {{- end }}
 {{- end }}
