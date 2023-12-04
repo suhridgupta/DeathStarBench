@@ -11,11 +11,15 @@ request = function()
   local start = tostring(math.random(0, 100))
   local stop = tostring(start + 10)
 
+  local handle = io.popen("kubectl get service nginx-thrift -n edge --template '{{.spec.clusterIP}}'")
+  local url = handle:read("*a")
+  handle:close()
+
   local args = "user_id=" .. user_id .. "&start=" .. start .. "&stop=" .. stop
   local method = "GET"
   local headers = {}
   headers["Content-Type"] = "application/x-www-form-urlencoded"
-  local path = "http://localhost:8080/wrk2-api/user-timeline/read?" .. args
+  local path = "http://" .. url .. ":8080/wrk2-api/user-timeline/read?" .. args
   return wrk.format(method, path, headers, nil)
 
 end

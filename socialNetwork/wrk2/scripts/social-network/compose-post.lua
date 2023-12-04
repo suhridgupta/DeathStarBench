@@ -64,8 +64,12 @@ request = function()
   media_ids = media_ids:sub(1, #media_ids - 1) .. "]"
   media_types = media_types:sub(1, #media_types - 1) .. "]"
 
+  local handle = io.popen("kubectl get service nginx-thrift -n edge --template '{{.spec.clusterIP}}'")
+  local url = handle:read("*a")
+  handle:close()
+
   local method = "POST"
-  local path = "http://localhost:8080/wrk2-api/post/compose"
+  local path = "http://" ..url .. ":8080/wrk2-api/post/compose"
   local headers = {}
   local body
   headers["Content-Type"] = "application/x-www-form-urlencoded"
