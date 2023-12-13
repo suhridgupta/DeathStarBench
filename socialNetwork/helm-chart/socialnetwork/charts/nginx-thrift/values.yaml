@@ -10,7 +10,7 @@ container:
   name: nginx-thrift
   ports: 
   - containerPort: 8080
-  resources:
+  resources: |
   - requests:
       cpu: "10m"
   env:
