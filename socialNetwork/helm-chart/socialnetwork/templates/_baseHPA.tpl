@@ -18,7 +18,7 @@ spec:
   - type: Pods
     pods:
       metric:
-        name: nginx_post_per_second
+        name: nginx_post_per_minute
       target:
         type: Value
         averageValue: 10
