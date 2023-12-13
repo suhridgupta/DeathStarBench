@@ -11,8 +11,8 @@ container:
   ports: 
   - containerPort: 8080
   resources: |
-  - requests:
-      cpu: "10m"
+    - requests:
+        cpu: "10m"
   env:
   - name: fqdn_suffix
     value: ".{{ .Release.Namespace }}.svc.cluster.local"
